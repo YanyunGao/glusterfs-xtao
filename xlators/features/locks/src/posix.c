@@ -2588,7 +2588,7 @@ pl_release (xlator_t *this, fd_t *fd)
 
         ret = inode_ctx_get (fd->inode, this, &tmp_pl_inode);
         if (ret != 0)
-                goto out;
+                goto free_ctx;
 
         pl_inode = (pl_inode_t *)(long)tmp_pl_inode;
 
@@ -2599,6 +2599,8 @@ pl_release (xlator_t *this, fd_t *fd)
 
         delete_locks_of_fd (this, pl_inode, fd);
         pl_update_refkeeper (this, fd->inode);
+
+free_ctx:
 
         ret = fd_ctx_del (fd, this, &tmp);
         if (ret) {
